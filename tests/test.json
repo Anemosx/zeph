@@ -1,0 +1,5 @@
+{
+  "valid_song_page": "<html><head><title>Never Gonna Give You Up - song by Rick Astley | Spotify</title></head><body></body></html>",
+  "invalid_format_page": "<html><head><title>Invalid Title Format</title></head><body></body></html>",
+  "no_title_tag_page": "<html><head></head><body>No title tag here</body></html>"
+}

@@ -1,0 +1,23 @@
+# This workflow will check the black formatting https://black.readthedocs.io/en/stable/
+
+name: black lint
+
+on:
+  push:
+    branches: [ "main", "dev", "test/*", "test-*" ]
+  pull_request:
+    branches: [ "main", "dev", "test/*", "test-*" ]
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: psf/black@stable
+        with:
+          options: "--check --verbose"
+          src: "."
+          version: "~= 24.8.0"
