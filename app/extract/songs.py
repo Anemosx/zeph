@@ -25,7 +25,6 @@ def extract_song_info(song_url: str) -> tuple[None, None] | tuple[str, str]:
 
     try:
         response = requests.get(song_url)
-        # print(response.text)
         soup = BeautifulSoup(response.text, "html.parser")
         title_tag = soup.title.string
 

@@ -4,9 +4,9 @@ name: black lint
 
 on:
   push:
-    branches: [ "main", "dev", "test/*", "test-*" ]
+    branches: ["test/*", "test-*"]
   pull_request:
-    branches: [ "main", "dev", "test/*", "test-*" ]
+    branches: ["main", "dev"]
 
 permissions:
   contents: read
