@@ -1,17 +1,25 @@
+import os
 from pathlib import Path
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
 from starlette.responses import JSONResponse
 
 from app.extract.playlists import extract_playlist_info
+from app.utils.spotify import get_spotify_token
 
 router = APIRouter()
+router.access_token = get_spotify_token()
+router.verbose = os.getenv("verbose", False)
 
 extract_html_file_path = Path("static") / "extract" / "index.html"
 with extract_html_file_path.open("r") as file:
     extract_content = file.read()
+
+
+def spotify_token_dependency() -> str:
+    return router.access_token
 
 
 class URLRequest(BaseModel):
@@ -21,15 +29,12 @@ class URLRequest(BaseModel):
 @router.get("/", response_class=HTMLResponse)
 async def read_root() -> HTMLResponse:
     """
-    Returns the HTML content of the root page.
-
-    This function reads the HTML content from a pre-defined file and returns it
-    as an HTML response. The response includes a header to disable caching.
+    Serve the main page HTML.
 
     Returns
     -------
     HTMLResponse
-        An HTML response containing the content of the root page.
+        HTML content with cache disabled.
     """
 
     response = HTMLResponse(content=extract_content)
@@ -39,30 +44,38 @@ async def read_root() -> HTMLResponse:
 
 
 @router.post("/submit_song_urls")
-async def submit_urls(url_request: URLRequest) -> JSONResponse:
+async def submit_urls(
+    url_request: URLRequest, access_token: str = Depends(spotify_token_dependency)
+) -> JSONResponse:
     """
-    Processes a list of song URLs and returns the extracted song information.
-
-    This function receives a POST request containing a list of song URLs, validates the input,
-    and extracts song information using the `extract_playlist_info` function. If no URLs are
-    provided, it raises an HTTP 400 error.
+    Process Spotify URLs and extract song details.
 
     Parameters
     ----------
     url_request : URLRequest
-        A Pydantic model containing a list of song URLs.
+        Request containing list of Spotify URLs.
+    access_token : str
+        Spotify API token.
 
     Returns
     -------
     JSONResponse
-        A JSON response containing the extracted song information in the format:
-        `{"songs": [{"url": "song_url", "title": "song_title", "artist": "song_artist"}, ...]}`.
+        Extracted song details including titles and artists.
+
+    Raises
+    ------
+    HTTPException
+        If no URLs provided.
     """
 
     urls = url_request.urls
     if not urls:
         raise HTTPException(status_code=400, detail="No URLs provided")
 
-    song_data = extract_playlist_info(urls)
+    song_data = extract_playlist_info(
+        song_urls=urls,
+        access_token=access_token,
+        verbose=router.verbose,
+    )
 
     return JSONResponse({"songs": song_data})

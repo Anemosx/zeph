@@ -29,6 +29,17 @@ Follow these steps:
    poetry install
    ```
 
+3. (OPTIONAL) Set the Spotify API credentials in `.env` file (from [Spotify Developer Dashboard](https://developer.spotify.com/dashboard)):
+   ```
+   SPOTIFY_CLIENT_ID=<your_client_id>
+   SPOTIFY_CLIENT_SECRET=<your_client_secret>
+   ```
+
+4. (OPTIONAL) Set the verbose flag in `.env` file:
+   ```
+   verbose=<True|False>
+   ```
+
 ## Running the Project
 
 ### 1. Running the Backend Server
