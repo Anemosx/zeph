@@ -10,40 +10,104 @@ Zeph is a user-friendly tool designed to make extracting Spotify playlists effor
 With Zeph, you can easily retrieve the songs from any Spotify playlist by simply
 pasting its URL. Once the URL is provided, the tool quickly processes the playlist,
 extracting all the tracks and presenting them in a neatly organized table.
-Whether you’re curating music, analyzing playlists, or just saving your favorite songs,
+Whether you're curating music, analyzing playlists, or just saving your favorite songs,
 Zeph streamlines the process, saving you time and effort.
 
 
 ## Installation
 
-**Install Project Dependencies**
-To get started, ensure you have Poetry installed to manage project dependencies.
-Follow these steps:
-1. Install Poetry:
+### 1. Using Poetry
+
+This section guides you through setting up Zeph using Poetry, a modern Python dependency management tool.
+
+#### Prerequisites
+- Python 3.11 or higher
+- pip (Python package installer)
+
+#### Setup Steps
+
+1. Install Poetry if you haven't already:
    ```bash
    pip install poetry
    ```
 
-2. Install the project dependencies:
+2. Clone the repository and install dependencies:
    ```bash
+   git clone https://github.com/Anemosx/zeph.git
+   cd zeph
    poetry install
    ```
 
-## Running the Project
+3. Configure Environment Variables (Optional)
+   Create a `.env` file in the project root with the following options:
 
-### 1. Running the Backend Server
+   ```ini
+   # Spotify API Credentials (from https://developer.spotify.com/dashboard)
+   SPOTIFY_CLIENT_ID=your_client_id_here
+   SPOTIFY_CLIENT_SECRET=your_client_secret_here
 
-Launch the backend server by executing the following command:
+   # Enable detailed logging (optional)
+   VERBOSE=True
+   ```
 
-```bash
-python app/main.py
-```
+## Running Zeph
 
-### 2. Accessing the Frontend
+### Starting the Application
 
-With the server running, open your web browser and navigate to:
+1. Launch the server:
+   ```bash
+   poetry run python app/main.py
+   ```
 
-[http://localhost:8000](http://localhost:8000)
+2. Access the web interface:
+   Open your browser and visit [http://localhost:8088](http://localhost:8088)
+
+The application will now be ready to extract your Spotify playlists.
+
+
+### 2. Using Docker
+
+This section guides you through setting up Zeph using Docker, a containerization platform that ensures consistent environments across different systems.
+
+#### Prerequisites
+- Docker and Docker Compose installed on your system
+
+#### Setup Steps
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Anemosx/zeph.git
+   cd zeph
+   ```
+
+2. Configure Environment Variables
+   Create a `.env` file in the project root with your credentials:
+   ```ini
+   # Spotify API Credentials (from https://developer.spotify.com/dashboard)
+   SPOTIFY_CLIENT_ID=your_client_id_here
+   SPOTIFY_CLIENT_SECRET=your_client_secret_here
+
+   # Enable detailed logging (optional)
+   VERBOSE=True
+   ```
+
+#### Running the Application
+
+1. Start the container using Docker Compose:
+   ```bash
+   docker compose up
+   ```
+   Or to run in detached mode:
+   ```bash
+   docker compose up -d
+   ```
+
+2. Access the web interface:
+   Open your browser and visit [http://localhost:8088](http://localhost:8088)
+
+The application will now be ready to extract your Spotify playlists.
+
+## Usage
 
 ![zeph_input](docs/zeph_input.png)
 
