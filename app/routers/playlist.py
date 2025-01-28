@@ -11,7 +11,7 @@ from app.utils.spotify import get_spotify_token
 
 router = APIRouter()
 router.access_token = get_spotify_token()
-router.verbose = os.getenv("verbose", False)
+router.verbose = os.getenv("VERBOSE", False)
 
 extract_html_file_path = Path("static") / "extract" / "index.html"
 with extract_html_file_path.open("r") as file:

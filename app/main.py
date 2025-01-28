@@ -23,4 +23,4 @@ zeph_app.include_router(playlist_router)
 
 
 if __name__ == "__main__":
-    uvicorn.run(zeph_app, port=8000)
+    uvicorn.run("app.main:zeph_app", host="0.0.0.0", port=8088)
